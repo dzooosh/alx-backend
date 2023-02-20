@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
+from typing import Tuple
 """ Simple helper function that returns a tuple of size two """
-def index_range(page: int, page_size: int) -> tuple[int, int]:
+def index_range(page: int, page_size: int) -> Tuple[int, int]:
     """ 
     Index_range - range of indexes concerning pagination parameter
     args:
