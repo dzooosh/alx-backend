@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-""" This is a basic flask app """
+""" This is a basic flask app
+    with change of language, logging in with user data access
+"""
 from flask import Flask, render_template, request, g
 from flask_babel import Babel, _
 
@@ -10,6 +12,7 @@ users = {
     3: {"name": "Spock", "locale": "kg", "timezone": "Vulcan"},
     4: {"name": "Teletubby", "locale": None, "timezone": "Europe/London"},
 }
+
 
 class Config(object):
     """
@@ -56,14 +59,15 @@ def get_user():
             return users.get(login_id)
     return None
 
+
 @app.before_request
 def before_request():
     """
     Check if user is present using get_user() function
         and saves it in the global
     """
-    user = get_user() # user is either None or with data
-    g.user = user # assign the user value to flask global
+    user = get_user()  # user is either None or with data
+    g.user = user  # assign the user value to flask global
 
 
 if __name__ == "__main__":
