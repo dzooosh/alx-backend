@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-from flask import Flask, render_template, request, g
-from flask_babel import Babel, _
-""" 
+"""
     This is a basic flask app
     with change of language, logging in with user data access
 """
+
+from flask import Flask, render_template, request, g
+from flask_babel import Babel, _
 
 
 users = {
@@ -34,17 +35,31 @@ app.config.from_object(Config)
 
 @babel.localeselector
 def get_locale():
-    """ invoked for each request to select a best match language """
+    """
+    invoked for each request to select a best match language
+    works based on priority
+    """
+    # Locale from URL parameters
     lang = request.args.get('locale')
     if lang in app.config['LANGUAGES']:
         return lang
+    # Locale from user settings
+    if g.user:
+        lang = g.user.get('locale')
+        if lang in app.config['LANGUAGES']:
+            return lang
+    # Locale from request header
+    loc = request.headers.get('locale', None)
+    if loc in app.config['LANGUAGES']:
+        return loc
+    # Default locale
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 
 @app.route('/', strict_slashes=False)
 def home():
     """ render the template """
-    return render_template('5-index.html')
+    return render_template('6-index.html')
 
 
 def get_user():
